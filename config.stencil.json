@@ -1,0 +1,10 @@
+{
+  "customLayouts": {
+    "brand": {},
+    "category": {},
+    "page": {},
+    "product": {}
+  },
+  "normalStoreUrl": "https://chrom-tech-inc-b2b-sandbox.mybigcommerce.com",
+  "port": 3000
+}
