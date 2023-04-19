@@ -64,26 +64,50 @@
 </div>
 
 <nav class="{{#if category.faceted_search_enabled}}facetedSearch-enabled{{/if}}">
-    {{#all category.subcategories theme_settings.subcategories_left_column}}
-        <div class="facetedSearch sidebarBlock">
-            <div id="subcategoryList" class="facetedSearch-navList blocker-container">
-                <div class="accordion accordion--navList">
-                    <h5 class="sidebarBlock-heading">{{category.name}}</h5>
-                    <ul class="navList">
-                        {{#each category.subcategories}}
-                        <li class="navList-item">
-                            <a class="navList-action" href="{{url}}" alt="{{name}}" title="{{name}}">{{name}}</a>
-                        </li>
-                        {{/each}}
-                    </ul>
+        {{#all category.subcategories theme_settings.subcategories_left_column}}
+            <div class="facetedSearch sidebarBlock">
+                <div id="subcategoryList" class="facetedSearch-navList blocker-container">
+                    <div class="accordion accordion--navList">
+                        <h5 class="sidebarBlock-heading">{{category.name}}</h5>
+                        <ul class="navList">
+                            {{#each category.subcategories}}
+                            <li class="navList-item">
+                                <a class="navList-action" href="{{url}}" alt="{{name}}" title="{{name}}">{{name}}</a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                    <div class="blocker" style="display: none;"></div>
                 </div>
-                <div class="blocker" style="display: none;"></div>
             </div>
-        </div>
-    {{/all}}
+        {{/all}}
+    
     {{#if template '!==' 'pages/custom/category/category-nofilters'}}
         {{#if category.faceted_search_enabled}}
-            {{> components/faceted-search/index category}}
+            {{> components/faceted-search/index category keep_closed=true}}
+        {{/if}}
+        {{#if template '===' 'pages/custom/category/category-producttable'}}
+            <script>
+                /*
+                let openFilters = document.querySelectorAll('.filter-header + .accordion .toggleLink.is-open');
+                openFilters.forEach(openFilter => {
+                    console.log('boing 8');
+                    openFilter.classList.remove('is-open');
+                    openFilter.setAttribute('aria-expanded',false);
+                    
+                    let openFilterFacets = document.querySelectorAll('.filter-header + .accordion + .accordion-content.is-open');
+                    console.log('bleh 8');
+                    openFilterFacets.forEach(openFilterFacet => {
+                        openFilterFacet.classList.remove('is-open');
+                        openFilterFacet.setAttribute('aria-hidden',true);
+                    
+                        console.log('zoinc 8');
+                    });
+                    
+                });
+                    */
+                
+            </script>
         {{/if}}
     {{/if}}
     {{#unless category.faceted_search_enabled}}

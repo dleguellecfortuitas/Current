@@ -16,7 +16,6 @@ category:
 {{/partial}}
 
 {{#partial "page"}}
-
 <div class="page page--category">
     <section class="page-content container">
         {{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
@@ -71,7 +70,7 @@ category:
         
             <main class="page-content" id="product-listing-container">
                 {{#if category.products}}
-                    {{> components/category/product-listing}}
+                    {{> components/category/product-listing parent-template=template }}
                 {{else}}
                     <p>{{lang 'categories.no_products'}}</p>
                 {{/if}}

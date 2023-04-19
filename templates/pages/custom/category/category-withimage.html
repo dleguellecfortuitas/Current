@@ -1,0 +1,174 @@
+---
+category:
+    shop_by_price: true
+    products:
+        limit: {{theme_settings.categorypage_products_per_page}}
+---
+{{inject "categoryProductsPerPage" theme_settings.categorypage_products_per_page}}
+{{#partial "head"}}
+    {{#if pagination.category.previous}}
+        <link rel="prev" href="{{pagination.category.previous}}">
+    {{/if}}
+    {{#if pagination.category.next}}
+        <link rel="next" href="{{pagination.category.next}}">
+    {{/if}}
+{{/partial}}
+
+{{#partial "page"}}
+
+<div class="container">
+    {{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
+</div>
+
+<div class="page">
+    <main class="page-content">
+        <div class="container">
+
+            {{#unless theme_settings.hide_category_page_heading }}
+                <h1 class="page-heading">{{category.name}}</h1>
+                <div id="go-to-products" class="go-to-products text-red ft-heading fs-sm fw-bold text-uppercase">
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 1.4884L10.59 0.0783996L6 4.6584L1.41 0.0783992L-6.16331e-08 1.4884L6 7.4884L12 1.4884Z" fill="#E51E31"/>
+                    </svg>
+                    Scroll down to purchase
+                </div>
+            {{/unless}}
+             
+            {{{region name="category_below_header"}}}
+                
+            <div class="category-column-content">
+                {{#if category.image}}
+                    <div class="category-image">
+                        <div class="img-box img-box-square">
+                            <img class="lazyload object-fit-scale-down" data-sizes="auto" src="{{cdn 'img/loading.svg'}}" data-src="{{getImage category.image 'zoom_size'}}">
+                        </div>
+                    </div>
+                {{/if}}
+                <div class="category-content">
+                    <div class="category-box">
+                        {{{category.description}}}
+                    </div>
+                    <div class="show-more">
+                        <div class="show-more-text ft-heading fs-sm fw-bold text-uppercase">
+                            <div class="show-more-label">
+                                Show More
+                                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 1.48837L10.59 0.0783691L6 4.65837L1.41 0.0783687L-6.16331e-08 1.48837L6 7.48837L12 1.48837Z" fill="#333333"/>
+                                </svg>
+                            </div>
+                            <div class="show-less-label">
+                                Show Less
+                                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 1.48837L10.59 0.0783691L6 4.65837L1.41 0.0783687L-6.16331e-08 1.48837L6 7.48837L12 1.48837Z" fill="#333333"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            
+            <div class="resources-box"></div>
+
+            <script>
+                
+                // let's make the resources go on a pretty box
+                let divResources = document.querySelector('.resources-box');
+                let divResourcesInjected = document.querySelector('.container-landing-resources');
+                let ulResourcesInjected = document.querySelector('.category-content ul:last-child');
+                
+                if (divResourcesInjected) {
+                    divResources.append(divResourcesInjected);
+                }
+                if (ulResourcesInjected) {
+                    divResources.append(ulResourcesInjected);
+                }
+
+                // show more
+                function showMore() {
+                    let catBoxWrap = document.querySelector('.category-column-content .category-content');
+                    let catBoxWrapHeight = catBoxWrap.offsetHeight;
+                    let catBox = document.querySelector('.category-box');
+                    let catBoxHeight = catBox.offsetHeight - 2;
+                    let showMore = document.querySelector('.show-more');
+                    
+                    if (catBoxWrapHeight >= catBoxHeight) {
+                        showMore.classList.toggle('hide-me');
+                    }
+                    
+                    showMore.onclick = function() {
+                        catBoxWrap.classList.toggle('expanded');
+                    };
+                }
+                
+                showMore();
+                
+                window.addEventListener('resize', function(event) {
+                    showMore();
+                }, true);
+                
+            </script>
+
+
+            {{{region name="category_below_description"}}}
+            {{{snippet 'categories'}}}
+            
+            {{#if theme_settings.show_subcategories}}
+                {{#if category.subcategories}}
+                    <div class="sidebarBlock page-content-subcategories">
+                        <h5 class="sidebarBlock-heading">Subcategories:</h5>
+                        <ul class="navList">
+                            {{#each category.subcategories}}
+                            <li class="navList-item">
+                                <a class="navList-action" href="{{url}}" alt="{{name}}" title="{{name}}">
+                                    <div class="image-wrap{{#unless image}} image-placeholder{{/unless}}">
+                                    {{#if image}}
+                                        <img class="lazyload" data-sizes="auto" src="{{cdn 'img/loading.svg'}}" data-src="{{getImage image}}" alt="{{image.alt}}" title="{{image.alt}}">
+                                    {{else}}
+                                        <img class="lazyload" data-sizes="auto" src="{{cdn 'img/loading.svg'}}" data-src="{{cdn 'assets/img/BrandDefault.gif'}}" alt="{{image.alt}}" title="{{image.alt}}">
+                                    {{/if}}
+                                    </div>
+                                    <span>{{name}}</span>
+                                </a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                {{/if}}
+            {{/if}}
+        </div>
+
+        <div id="the-products"></div>
+        <script>
+            // go to products
+            let goToProducts = document.getElementById('go-to-products');
+            let theProducts = document.getElementById('the-products');
+            
+            goToProducts.onclick = function() {
+                theProducts.scrollIntoView();
+            };
+        </script>
+        
+        <div class="grid-bg">
+            <div class="container">
+                {{#or theme_settings.subcategories_left_column theme_settings.shop_by_price_visibility}}
+                    <aside class="page-sidebar" id="faceted-search-container">
+                        {{> components/category/sidebar}}
+                    </aside>
+                {{/or}}
+                <main id="product-listing-container" class="page-content">
+                    {{#if category.products}}
+                        {{> components/category/product-listing}}
+                    {{else}}
+                        <div class="container">
+                            <p>{{lang 'categories.no_products'}}</p>
+                        </div>
+                    {{/if}}
+                    {{{region name="category_below_content"}}}
+                </main>
+            </div>
+        </div>
+    </main>
+</div>
+
+{{/partial}}
+{{> layout/base}}

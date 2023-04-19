@@ -1,0 +1,109 @@
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js" type="text/javascript"></script>   
+<script type='text/javascript'>
+        function isWholeNumber(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n) && n % 1 == 0;
+        };
+        function addItem(productId, qty) {
+                var cmd = "/cart.php?action=add&product_id=" + productId + "&qty=" + qty;
+                return $.get(cmd)
+                    .done(function (data, status, xhr) {
+                        console.log("Added product_id:" +productId + " qty: " + qty + " " + status);
+	                    })
+                    // chain more async GET requests using .then & .done
+                    .fail(function (xhr, status, error) {
+                        console.log('oh noes, error with status ' + status + ' and error: ');
+                        console.error(error);
+                        return xhr.done();
+                    })
+                    .always(function () {
+                        // go to cart
+                        return window.location = "/cart.php";
+                    })
+            };
+            function cartJson() {
+                var cartForm = [];
+                $('.product-qty>input').each(function (i) {
+                    var qty = $(this).val();
+                    if (isWholeNumber(qty) && qty > -1) {
+                        cartForm.push({
+                            productid: $(this).data("product-id"),
+                            quantity: parseInt(qty)
+
+                        });
+                    }
+
+                });
+                var jsonConvertedData = JSON.stringify(cartForm);  // Convert to json
+                console.log(jsonConvertedData);
+            }
+            function        addAllItems() {
+                        $('.product-qty>input').each(function (i) {
+                    var qty = $(this).val();
+                    if (isWholeNumber(qty) && qty > -1) {
+                        addItem($(this).data("product-id"), parseInt(qty));
+                        }
+                    })
+                }
+
+
+
+
+</script>
+
+<table class="productTable">
+    <tr>
+        <th>SKU</th>
+        <th>Name</th>
+        {{assignVar "count" 0}}
+        {{#each cfacets}}
+            {{#unless  (getVar "count") "==="  3 }} 
+                {{#if visible}}
+                <div style='display:none'>{{incrementVar "count"}}</div>
+                    <th>{{ title }}</th>
+                {{/if}}
+            {{/unless}}
+        {{/each}}
+        
+        <th>QTY</th>
+    </tr>
+    {{#each products}}
+    <tr class="productRow">
+        <td class="product-sku"><div class="mobile">SKU</div>{{ sku }}</td>
+        <td class="product-description"><div class="mobile">Name</div>
+            <a class="quickview" data-event-type="product-click" data-product-id="{{id}}">{{ name }}</a>
+        </td>
+        {{assignVar "count" 0}}
+            {{#each ../cfacets}}
+       
+                {{#unless  (getVar "count") "==="  3 }} 
+                    {{#if visible}}
+                        {{assignVar "data_set" 0}}
+                        <div style='display:none'>{{incrementVar "count"}}</div>
+                        {{#each ../custom_fields}}   
+                            {{#if  ../title '===' name }}
+                                {{assignVar "data_set" 1}}
+                                <td>
+                                        <div class="mobile">{{ ../title }}</div>
+                                        {{ value }}
+                                </td>    
+                            {{/if}}
+                        {{/each}}
+                         {{#unless  (getVar "data_set") "==="  1 }} 
+                                {{assignVar "data_set" 0}}
+                                <td><div class="mobile">{{title }}</div>
+                                </td>  
+                         {{/unless}}
+                    {{/if}}
+                {{/unless}}
+            {{/each}}
+
+            <td class="product-qty">
+                <div class="mobile">QTY</div>
+                <input type="text"  data-product-id="{{id}}"  placeholder="0">
+            </td>
+        </tr>
+    {{/each}}
+    
+</table>
+<button  class="button button--small card-figcaption-button" type="button"  onclick="addAllItems()">Add to cart</button>
