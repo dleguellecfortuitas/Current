@@ -5,27 +5,31 @@
     {{inject 'currentPassword' (lang 'forms.validate.account.edit.password')}}
     <fieldset class="form-fieldset">
         <div class="form-row form-row--half">
-            <div class="form-field">
+		        <!--**DCS mod** -- added "no-border" class-->
+		        <div class="form-field no-border">
                 <label class="form-label" for="account_firstname">
                     {{lang 'account.settings.first_name' }}
                     <small>{{lang 'common.required' }}</small>
                 </label>
                 <input type="text" class="form-input" name="account_firstname" id="account_firstname" value="{{forms.edit_account.first_name}}">
             </div>
-            <div class="form-field">
+		        <!--**DCS mod** -- added "no-border" class-->
+		        <div class="form-field no-border">
                 <label class="form-label" for="account_lastname">
                     {{lang 'account.settings.last_name' }}
                     <small>{{lang 'common.required' }}</small>
                 </label>
                 <input type="text" class="form-input" name="account_lastname" id="account_lastname" value="{{forms.edit_account.last_name}}">
             </div>
-            <div class="form-field">
+		        <!--**DCS mod** -- added "no-border" class-->
+		        <div class="form-field no-border">
                 <label class="form-label" for="account_companyname">
                     {{lang 'account.settings.company' }}
                 </label>
                 <input type="text" class="form-input" name="account_companyname" id="account_companyname" value="{{forms.edit_account.company_name}}">
             </div>
-            <div class="form-field">
+		        <!--**DCS mod** -- added "no-border" class-->
+		        <div class="form-field no-border">
                 <label class="form-label" for="account_phone">
                     {{lang 'account.settings.phone' }}
                 </label>

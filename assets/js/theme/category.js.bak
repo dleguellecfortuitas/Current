@@ -90,10 +90,9 @@ export default class Category extends CatalogPage {
 
             $('body').triggerHandler('compareReset');
 
-            /*SCROLL TO TOP
             $('html, body').animate({
                 scrollTop: 0,
-            }, 100);*/
+            }, 100);
         }, {
             validationErrorMessages: {
                 onMinPriceError,

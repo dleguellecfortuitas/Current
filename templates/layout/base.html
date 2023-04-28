@@ -68,10 +68,42 @@
         {{~inject 'carouselActiveDotAriaLabel' (lang 'carousel.active_dot_aria_label')}}
         {{~inject 'carouselContentAnnounceMessage' (lang 'carousel.content_announce_message')}}
 
+        {{!-- BundleB2B --}}
+        {{~inject "customer" customer}}
+        {{~inject 'store_hash' settings.store_hash}}
+        {{~inject "settings" settings}}
+        {{~inject "page_type" page_type}}
+        {{~inject "currency_selector" currency_selector}}
+        {{~inject "inDevelopment" in_development}}
+        {{!-- BundleB2B --}}
+
         {{!-- Get this loading ASAP --}}
         <link rel="preload" href="{{cdn 'assets/dist/theme-bundle.main.js'}}" as="script">
+        {{assignVar 'ss_site_id' 'lzvgq6'}}
+        {{#or category brand}}
+        	{{assignVar 'ss_defer_config' 'not-defer'}}
+        {{else}}
+        	{{assignVar 'ss_defer_config' 'defer'}}
+        {{/or}}
+        <script type="text/javascript" src="https://snapui.searchspring.io/{{getVar 'ss_site_id'}}/bundle.js" id="searchspring-context" {{getVar 'ss_defer_config'}}>
+        	{{#if customer}}shopper = { id : "{{ customer.id }}", group : "{{ customer.customer_group_id }}" };{{/if}}
+        	{{#if category}}
+        		{{#if category.id '===' 862}}
+        		{{else}} 
+        			template = "{{template}}", category = { id : "{{ category.id }}", name : "{{#replace '"' category.name}}&quot;{{else}}{{category.name}}{{/replace}}", path : "{{#each breadcrumbs}}{{#unless @first}}{{#replace '"' name}}&quot;{{else}}{{name}}{{/replace}}{{#unless @last}}>{{/unless}}{{/unless}}{{/each}}" };
+        		{{/if}}
+        	{{else if brand}}
+        		brand = "{{#replace '"' brand.name}}&quot;{{else}}{{brand.name}}{{/replace}}";
+        	{{/if}}
+        	{{#if settings.storefront_api.token }}
+        	    token = "{{ settings.storefront_api.token }}";
+            {{/if}}
+            {{# if currency_selector.active_currency_code}}
+            	currency = "{{ currency_selector.active_currency_code }}";
+            {{/if}}
+        </script>
     </head>
-    <body>
+    <body class="{{#if page_type}}page_type__{{snakecase (lowercase page_type)}}{{/if}} {{#if page}}page_title__{{snakecase (lowercase page.title)}}{{/if}}{{#if category}}{{#if category.id '===' 862}} ss-shop{{/if}}{{/if}}">
         <svg data-src="{{cdn 'img/icon-sprite.svg'}}" class="icons-svg-sprite"></svg>
 
         {{> components/common/header }}
@@ -83,6 +115,10 @@
             {{!-- Exported in app.js --}}
             function onThemeBundleMain() {
                 window.stencilBootstrap("{{page_type}}", {{jsContext}}).load();
+
+                {{!-- BundleB2B --}}
+                window.jsContext = JSON.parse({{ jsContext }});
+                {{!-- BundleB2B --}}
             }
         </script>
         <script async defer src="{{cdn 'assets/dist/theme-bundle.main.js'}}" onload="onThemeBundleMain()"></script>

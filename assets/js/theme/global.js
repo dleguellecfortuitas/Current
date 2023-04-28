@@ -36,5 +36,90 @@ export default class Global extends PageManager {
         svgInjector();
         
         rootsLoaded();
+
+        /* BundleB2B */
+        const $body = $('body');
+        const B3StorefrontURL = 'https://cdn.bundleb2b.net/b3-auto-loader.js';
+        // const B3StorefrontURL = 'http://127.0.0.1:8080/bundleb2b.latest.js';
+        $body.append(`<script src="${B3StorefrontURL}"></script>`);
+        window.b3themeConfig = window.b3themeConfig || {};
+        window.b3themeConfig.useContainers = {
+            'dashboard.endMasquerade.container': '.header .header-logo--wrap',
+            'pdp.shoppinglist.container': '.productView-details .productView-options #b3Container__shoppinglist',
+        };
+        window.b3themeConfig.useJavaScript = {
+            login: {
+                callback(instance) {
+                    const {
+                        context: {
+                            inDevelopment,
+                        },
+                        isB2BUser,
+                        isMobile,
+                    } = instance;
+
+                    if (inDevelopment) {
+                        console.log(instance.name, instance);
+                    }
+
+                    const showBCOrdersContent = () => { 
+                        const style = `
+                            <style>
+                                .page_type__account_orderstatus .body .container .account {
+                                    display: block !important;
+                                }
+                            </style>
+                        `;
+                        $('head').append(style);
+                    };
+
+                    const hideWishlists = () => { 
+                        const $navPages_subMenu_item__wishlists = $('.navPages_subMenu_item__wishlists');
+                        if ($navPages_subMenu_item__wishlists && $navPages_subMenu_item__wishlists.length) $navPages_subMenu_item__wishlists.hide()
+                    };
+
+                    if (isB2BUser) {
+                        if (isMobile) hideWishlists();
+                    } else {
+                        showBCOrdersContent();
+                    }
+                },
+            },
+            orders: {
+                callback(instance) {
+                    const {
+                        context: {
+                            inDevelopment,
+                        },
+                        isB2BUser,
+                    } = instance;
+
+                    if (inDevelopment) {
+                        console.log(instance.name, instance);
+                    }
+
+                    const fixClasslist = () => { 
+                        $('.order-lists-wrap').addClass('account');
+                    };
+
+                    const showB3OrdersContent = () => { 
+                        const style = `
+                            <style>
+                                .page_type__account_orderstatus .body .container .order-lists-wrap {
+                                    display: block !important;
+                                }
+                            </style>
+                        `;
+                        $('head').append(style);
+                    };
+
+                    if (isB2BUser) {
+                        fixClasslist();
+                        showB3OrdersContent();
+                    }
+                },
+            },
+        };
+        /* BundleB2B */
     }
 }

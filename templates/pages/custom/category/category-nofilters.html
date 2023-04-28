@@ -21,16 +21,52 @@ category:
 </div>
 
 <div class="page">
-    <main class="page-content" id="product-listing-container">
+    <main class="page-content">
         <div class="container">
-            {{#if category.image}}
-                <img class="lazyload" data-sizes="auto" src="{{cdn 'img/loading.svg'}}" data-src="{{getImage category.image 'zoom_size'}}">
-            {{/if}}
+
             {{#unless theme_settings.hide_category_page_heading }}
                 <h1 class="page-heading">{{category.name}}</h1>
+                <div id="go-to-products" class="go-to-products text-red ft-heading fs-sm fw-bold text-uppercase">
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 1.4884L10.59 0.0783996L6 4.6584L1.41 0.0783992L-6.16331e-08 1.4884L6 7.4884L12 1.4884Z" fill="#E51E31"/>
+                    </svg>
+                    Scroll down to purchase
+                </div>
             {{/unless}}
+            
             {{{region name="category_below_header"}}}
-            {{{category.description}}}
+                
+            <div class="category-column-content">
+                <div class="category-content no-filter">
+                    <div class="category-box">
+                        {{{category.description}}}
+                    </div>
+                </div> 
+            </div>
+            
+            <div class="resources-box"></div>
+
+            <script>
+                
+                // let's make the resources go on a pretty box
+                let divResources = document.querySelector('.resources-box');
+                let divResourcesInjected = document.querySelector('.container-landing-resources');
+                let ulResourcesInjected = document.querySelector('.category-content ul:last-child');
+                
+                if (divResourcesInjected) {
+                    divResources.append(divResourcesInjected);
+                }
+                if (ulResourcesInjected) {
+                    divResources.append(ulResourcesInjected);
+                }
+                
+                window.addEventListener('resize', function(event) {
+                    showMore();
+                }, true);
+                
+            </script>
+
+
             {{{region name="category_below_description"}}}
             {{{snippet 'categories'}}}
             
@@ -59,6 +95,17 @@ category:
             {{/if}}
         </div>
 
+        <div id="the-products"></div>
+        <script>
+            // go to products
+            let goToProducts = document.getElementById('go-to-products');
+            let theProducts = document.getElementById('the-products');
+            
+            goToProducts.onclick = function() {
+                theProducts.scrollIntoView();
+            };
+        </script>
+
         
         <div class="grid-bg">
             <div class="container">
@@ -67,14 +114,16 @@ category:
                         {{> components/category/sidebar}}
                     </aside>
                 {{/or}}
-                <main class="page-content">
-                    {{#if category.products}}
-                        {{> components/category/product-listing}}
-                    {{else}}
-                        <div class="container">
-                            <p>{{lang 'categories.no_products'}}</p>
-                        </div>
-                    {{/if}}
+                <main class="page-content" id="product-listing-container">
+                    <!--div id="searchspring-content"-->
+                        {{#if category.products}}
+                            {{> components/category/product-listing}}
+                        {{else}}
+                            <div class="container">
+                                <p>{{lang 'categories.no_products'}}</p>
+                            </div>
+                        {{/if}}
+                    <!--/div-->
                     {{{region name="category_below_content"}}}
                 </main>
             </div>

@@ -21,22 +21,24 @@
         </span>
     </a>
 
-    {{#any facets visible=true}}
-        <div id="facetedSearch-navList" class="facetedSearch-navList" >
-            <div class="filter-header">Filter by</div>
-            <div class="accordion accordion--navList">
-
-                {{#if keep_closed '===' true }}
-                    {{assignVar "be_closed" 1}}
-                {{/if}}
-                {{#each facets}} 
-                    {{#if visible  }}
-                        {{{dynamicComponent 'components/faceted-search/facets'  be_closed }}}
+    <div id="searchspring-sidebar">
+        {{#any facets visible=true}}
+            <div id="facetedSearch-navList" class="facetedSearch-navList" >
+                <div class="filter-header">Filter by</div>
+                <div class="accordion accordion--navList">
+    
+                    {{#if keep_closed '===' true }}
+                        {{assignVar "be_closed" 1}}
                     {{/if}}
-                {{/each}}
+                    {{#each facets}} 
+                        {{#if visible  }}
+                            {{{dynamicComponent 'components/faceted-search/facets'  be_closed }}}
+                        {{/if}}
+                    {{/each}}
+                </div>
+    
+                <div class="blocker" style="display: none;"></div>
             </div>
-
-            <div class="blocker" style="display: none;"></div>
-        </div>
-    {{/any}}
+        {{/any}}
+    </div>
 </div>

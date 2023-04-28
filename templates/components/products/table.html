@@ -1,56 +1,5 @@
 
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js" type="text/javascript"></script>   
-<script type='text/javascript'>
-        function isWholeNumber(n) {
-            return !isNaN(parseFloat(n)) && isFinite(n) && n % 1 == 0;
-        };
-        function addItem(productId, qty) {
-                var cmd = "/cart.php?action=add&product_id=" + productId + "&qty=" + qty;
-                return $.get(cmd)
-                    .done(function (data, status, xhr) {
-                        console.log("Added product_id:" +productId + " qty: " + qty + " " + status);
-	                    })
-                    // chain more async GET requests using .then & .done
-                    .fail(function (xhr, status, error) {
-                        console.log('oh noes, error with status ' + status + ' and error: ');
-                        console.error(error);
-                        return xhr.done();
-                    })
-                    .always(function () {
-                        // go to cart
-                        return window.location = "/cart.php";
-                    })
-            };
-            function cartJson() {
-                var cartForm = [];
-                $('.product-qty>input').each(function (i) {
-                    var qty = $(this).val();
-                    if (isWholeNumber(qty) && qty > -1) {
-                        cartForm.push({
-                            productid: $(this).data("product-id"),
-                            quantity: parseInt(qty)
-
-                        });
-                    }
-
-                });
-                var jsonConvertedData = JSON.stringify(cartForm);  // Convert to json
-                console.log(jsonConvertedData);
-            }
-            function        addAllItems() {
-                        $('.product-qty>input').each(function (i) {
-                    var qty = $(this).val();
-                    if (isWholeNumber(qty) && qty > -1) {
-                        addItem($(this).data("product-id"), parseInt(qty));
-                        }
-                    })
-                }
-
-
-
-
-</script>
-
+<h1>PLEASE SHOW</h1>
 <table class="productTable">
     <tr>
         <th>SKU</th>
@@ -69,9 +18,11 @@
     </tr>
     {{#each products}}
     <tr class="productRow">
-        <td class="product-sku"><div class="mobile">SKU</div>{{ sku }}</td>
+        <td class="product-sku"><div class="mobile">SKU</div>
+            <a href="{{url}}" aria-label="{{sku}}" >{{ sku }}</a>
+        </td>
         <td class="product-description"><div class="mobile">Name</div>
-            <a class="quickview" data-event-type="product-click" data-product-id="{{id}}">{{ name }}</a>
+            <a href="{{url}}" aria-label="{{name}}" data-product-id="{{id}}">{{ name }}</a>
         </td>
         {{assignVar "count" 0}}
             {{#each ../cfacets}}
@@ -106,4 +57,5 @@
     {{/each}}
     
 </table>
-<button  class="button button--small card-figcaption-button" type="button"  onclick="addAllItems()">Add to cart</button>
+<button  type="button button--small"  onclick="addAllItems()">Add to cart</button>
+<!--button class="button button--small card-figcaption-button" type="button"  onclick="addAllItems()">Add to cart</button-->

@@ -33,7 +33,6 @@ blog:
     {{{region name="home_below_carousel"}}}
 
 {{/partial}}
-
 {{#partial "page"}}
     {{#each shipping_messages}}
         {{> components/common/alert/alert-info message}}
@@ -45,7 +44,7 @@ blog:
                 {{> components/products/featured products=products.featured columns=theme_settings.homepage_featured_products_column_count}}
             {{/if}}
             {{{region name="home_below_featured_products"}}}
-         
+        
             {{#if products.top_sellers}}
                 {{> components/products/top products=products.top_sellers columns=theme_settings.homepage_top_products_column_count}}
             {{/if}}
@@ -57,7 +56,6 @@ blog:
         </div>
     </div>
 {{/partial}}
-    
 
 {{#partial "hero-bottom"}}
     {{#if blog.recent_posts}}
@@ -74,8 +72,6 @@ blog:
     {{/if}}
 
     {{{region name="home_below_new_products"}}}
-    
-    {{{region name="home_below_new_section"}}}
 {{/partial}}
 
 {{> layout/base}}

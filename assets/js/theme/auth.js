@@ -113,6 +113,11 @@ export default class Auth extends PageManager {
             submit: `${this.formCreateSelector} input[type='submit']`,
             tap: announceInputErrorMessage,
         });
+
+        /* BundleB2B */
+        window.createAccountValidator = createAccountValidator;
+        /* BundleB2B */
+
         const $stateElement = $('[data-field-type="State"]');
         const emailSelector = `${this.formCreateSelector} [data-field-type='EmailAddress']`;
         const $emailElement = $(emailSelector);

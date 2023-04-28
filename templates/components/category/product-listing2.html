@@ -1,10 +1,10 @@
 {{inject 'noCompareMessage' (lang 'compare.no_compare')}}
 
+
 {{#if category.products}}
     <div {{#if settings.data_tag_enabled}} data-list-name="Category: {{category.name}}" {{/if}}>
         {{> components/products/table cfacets=category.facets products=category.products show_compare=category.show_compare theme_settings=theme_settings}}
     </div>
-
     {{> components/common/paginator pagination.category}}
 {{else}}
     {{#if category.search_error}}
@@ -16,6 +16,6 @@
            tabindex="-1"
         >
             {{lang 'categories.no_products'}}
-        </p>
+        </p> 
     {{/if}}
 {{/if}}

@@ -33,7 +33,11 @@ category:
                     Scroll down to purchase
                 </div>
             {{/unless}}
-             
+            
+            <!--div id="searchspring-tabs"></div-->
+            
+            {{#if category.id '===' 862}}
+            {{else}}
             {{{region name="category_below_header"}}}
                 
             <div class="category-column-content">
@@ -110,6 +114,7 @@ category:
 
 
             {{{region name="category_below_description"}}}
+            {{/if}}
             {{{snippet 'categories'}}}
             
             {{#if theme_settings.show_subcategories}}
@@ -156,13 +161,15 @@ category:
                     </aside>
                 {{/or}}
                 <main id="product-listing-container" class="page-content">
-                    {{#if category.products}}
-                        {{> components/category/product-listing}}
-                    {{else}}
-                        <div class="container">
-                            <p>{{lang 'categories.no_products'}}</p>
-                        </div>
-                    {{/if}}
+                    <!--div id="searchspring-content"-->
+                        {{#if category.products}}
+                            {{> components/category/product-listing}}
+                        {{else}}
+                            <div class="container">
+                                <p>{{lang 'categories.no_products'}}</p>
+                            </div>
+                        {{/if}}
+                    <!--/div-->
                     {{{region name="category_below_content"}}}
                 </main>
             </div>
